@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eternal Versace — Versace Tableware</title>
+  <link rel="stylesheet" href="css/default.css" id="theme-stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"> 
+  <script src="theme-switcher.js"></script>
+  <script src="current-path.js" defer></script>
+</head>
+<body>
+  <!-- CSS-only theme toggle --> 
+  <input type="radio" name="theme" id="theme-default" class="theme-radio" checked>
+  <input type="radio" name="theme" id="theme-eighties" class="theme-radio">
+  <input type="radio" name="theme" id="theme-nineties" class="theme-radio">
+  <input type="radio" name="theme" id="theme-oos" class="theme-radio">
+ 
+  <div class="page">
+
+    <header class="site-header" id="home">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="index.html" class="brand-name">Eternal Versace</a>
+        </div>
+
+        <nav class="main-nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="map.html">Map</a>
+          <a href="collection.html">Collection</a>
+          <a href="aboutus.html">About Us</a>
+        </nav>
+
+        <div class="theme-switch">
+          <label for="theme-default" class="opt light">⚜️</label>
+          <label for="theme-eighties" class="opt dark">💎</label>
+          <label for="theme-nineties" class="opt mid">💾</label>
+          <label for="theme-oos" class="opt vivid">🛸</label>
+          <span class="knob"></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="item-detail">
+        <h2 style="text-align: left; margin-bottom: 24px; color: #ffffff;">Versace Tableware</h2>
+        
+        <div class="item-content">
+          <div class="item-image">
+            <div class="item-gallery" role="region" aria-roledescription="carousel" aria-label="Versace Tableware - photo gallery">
+              <div class="item-gallery-track" id="table-gallery-track">
+                <figure class="item-gallery-slide">
+                  <img src="images/exhibits/ceramics.webp" alt="Versace Tableware - main view" />
+                </figure>
+                <figure class="item-gallery-slide">
+                  <img src="images/table_1.jpg" alt="Versace Tableware - detail 1" />
+                </figure>
+                <figure class="item-gallery-slide">
+                  <img src="images/table_2.webp" alt="Versace Tableware - detail 2" />
+                </figure>
+              </div>
+              <div class="item-gallery-nav">
+                <button type="button" class="item-gallery-prev" aria-label="Previous photo">⬅</button>
+                <span class="item-gallery-counter" id="table-gallery-counter" aria-live="polite">1 / 3</span>
+                <button type="button" class="item-gallery-next" aria-label="Next photo">⮕</button>
+              </div>
+            </div>
+          </div>
+          <div class="item-text">
+            <select class="visitor-select" id="visitor-select" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--line); font-size: 16px; background: #ffffff; color: var(--text);">
+              <option value="child">Child</option>
+              <option value="general" selected>General visitor</option>
+              <option value="expert">Expert</option>
+            </select>
+           <div id="text-content">
+             <div id="text-child" class="visitor-text" style="display: none;">
+               <p>These are plates and cups made by Versace. They are super fancy, with shiny gold and the Medusa head on them—like eating and sitting in a palace!</p>
+             </div>
+             <div id="text-general" class="visitor-text" style="display: block;">
+               <p>Versace doesn’t only make clothes—they also design furniture and tableware. Chairs, plates, and cups carry the same gold details and Medusa symbols you see in the clothes, bringing fashion into everyday life.</p>
+             </div>
+             <div id="text-expert" class="visitor-text" style="display: none;">
+               <p>Versace Home, established in 1992, extended the brand’s aesthetic into lifestyle design. Characterized by neoclassical motifs, lavish ornamentation, and the iconic Medusa emblem, Versace’s furniture and porcelain collections embody the translation of luxury fashion codes into domestic space. They represent an early example of a couture house building a holistic lifestyle brand.</p>
+             </div>
+           </div>
+           <details style="margin-bottom: 20px;">
+            <summary>Metadata</summary>
+            <table class="metadata-table">
+              <tbody>
+                <tr><th scope="row">Title</th><td>Versace Tableware</td></tr>
+                <tr><th scope="row">Date</th><td>2015</td></tr>
+                <tr><th scope="row">Category</th><td>Homeware</td></tr>
+                <tr><th scope="row">Materials</th><td>Porcelain, ceramic, gold detailing</td></tr>
+                <tr><th scope="row">Brand</th><td>Versace</td></tr>
+              </tbody>
+            </table>
+          </details>
+           <div class="item-nav-buttons">
+            <button type="button" class="btn-back" onclick="navigate('back')">⬅ Back</button>
+            <button type="button" class="btn-forward" onclick="navigate('forward')">Forward ⮕</button>
+          </div>
+          <p id="current-path"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <h3>Eternal Versace</h3>
+          <p>Student project for the "Information Modeling and Web technologies" course of the Master Degree in Digital Humanities and Digital Knowledge of the University of Bologna</p>
+        </div>
+        <div>
+          <h3>Links</h3>
+          <p>About</p>
+          <p>Documentation</p>
+          <p>Disclaimer</p>
+          <p>GitHub repository</p>
+          <p>DHDK course page</p>
+        </div>
+        <div>
+          <h3>Creators</h3>
+          <p>Artem Romashov</p>
+          <p>Polina Khromtcova</p>
+        </div>
+      </div>
+      <p class="tiny">© 2025 Eternal Versace</p>
+    </footer>
+  </div>
+  <script>
+    (function() {
+      const select = document.getElementById('visitor-select');
+      const textChild = document.getElementById('text-child');
+      const textGeneral = document.getElementById('text-general');
+      const textExpert = document.getElementById('text-expert');
+      
+      if (!select || !textChild || !textGeneral || !textExpert) {
+        return;
+      }
+      
+      function updateText() {
+        const value = select.value;
+        
+        // Hide all text sections
+        textChild.style.display = 'none';
+        textGeneral.style.display = 'none';
+        textExpert.style.display = 'none';
+        
+        // Show the selected text section
+        if (value === 'child') {
+          textChild.style.display = 'block';
+        } else if (value === 'general') {
+          textGeneral.style.display = 'block';
+        } else if (value === 'expert') {
+          textExpert.style.display = 'block';
+        }
+      }
+      
+      // Initialize on page load
+      updateText();
+      
+      // Update when selection changes
+      select.addEventListener('change', updateText);
+    })();
+
+    (function() {
+      const track = document.getElementById('table-gallery-track');
+      const counter = document.getElementById('table-gallery-counter');
+      const prev = document.querySelector('.item-gallery-prev');
+      const next = document.querySelector('.item-gallery-next');
+      if (!track || !counter || !prev || !next) return;
+
+      const slides = track.querySelectorAll('.item-gallery-slide');
+      const total = slides.length;
+      if (total === 0) return;
+
+      function currentIndex() {
+        const w = track.clientWidth || 1;
+        return Math.round(track.scrollLeft / w);
+      }
+
+      function updateCounter() {
+        const i = Math.min(Math.max(currentIndex(), 0), total - 1);
+        counter.textContent = (i + 1) + ' / ' + total;
+        prev.disabled = i <= 0;
+        next.disabled = i >= total - 1;
+      }
+
+      function goTo(index) {
+        const w = track.clientWidth;
+        if (!w) return;
+        track.scrollTo({ left: index * w, behavior: 'smooth' });
+      }
+
+      prev.addEventListener('click', function() {
+        goTo(currentIndex() - 1);
+      });
+      next.addEventListener('click', function() {
+        goTo(currentIndex() + 1);
+      });
+      track.addEventListener('scroll', function() {
+        window.requestAnimationFrame(updateCounter);
+      }, { passive: true });
+      window.addEventListener('resize', updateCounter);
+      updateCounter();
+    })();
+
+    function navigate(direction) {
+
+      let path = localStorage.getItem('path');
+
+      if (direction === "forward") { //следующая страница
+        if (path === "0") {
+          window.location.href = 'picasso_painting.html';
+        } else if (path === "1") {
+          window.location.href = 'satin_shoes.html';
+        } else if (path === "2") {
+          window.location.href = 'bandage_dress.html';
+        }
+      }
+      else if (direction === "back") { //предыдущая страница
+        if (path === "0") {
+          window.location.href = 'butterfly_dress.html';
+        } else if (path === "1") {
+          window.location.href = 'sunglasses.html';
+        } else if (path === "2") {
+          window.location.href = 'red_carpet_path.html';
+        }
+      }
+    }
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eternal Versace — Interactive Museum Map</title>
+  <link rel="stylesheet" href="css/default.css" id="theme-stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"> 
+  <script src="theme-switcher.js"></script>
+  <style>
+    /* Map-specific styles */
+    .map-section {
+      margin: 2rem 0;
+    }
+
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: var(--card-bg, white);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .floor-plan {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .hotspot {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .hotspot:hover {
+      transform: translate(-50%, -50%) scale(1.3);
+      z-index: 100;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-size: 14px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      left: 50%;
+      transform: translate(-50%, -10px);
+    }
+
+    .hotspot:hover .tooltip {
+      opacity: 1;
+      transform: translate(-50%, -45px);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: var(--card-bg, white);
+      color: var(--text-color, #000);
+      border-radius: 15px;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideUp 0.3s ease;
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    @keyframes slideUp {
+      from { 
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      to { 
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-content h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: var(--heading-color, #000);
+      border-bottom: 3px solid #d4af37;
+      padding-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .modal-content p {
+      font-size: 1.1em;
+      line-height: 1.8;
+      color: var(--text-color, #333);
+      margin-bottom: 15px;
+    }
+
+    .modal-content ul {
+      margin-left: 20px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    .modal-content ul li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+   
+    .modal-qr-image {
+      display: block;
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      margin: 20px auto 0;
+      border-radius: 8px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 2em;
+      color: #666;
+      cursor: pointer;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+
+    .close-btn:hover {
+      background: rgba(0, 0, 0, 0.1);
+      color: #000;
+      transform: rotate(90deg);
+    }
+
+    .legend {
+      margin-top: 30px;
+      padding: 20px;
+      background: var(--card-bg, white);
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .legend h3 {
+      margin-bottom: 15px;
+      color: var(--heading-color, #000);
+      font-size: 1.3em;
+      letter-spacing: 1px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      margin: 0 20px;
+      font-size: 1em;
+    }
+
+    .legend-dot {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .map-intro {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .map-intro h2 {
+      font-size: 2.5em;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .map-intro {
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .modal-content {
+        padding: 25px;
+      }
+      
+      .hotspot {
+        width: 25px;
+        height: 25px;
+      }
+
+      .map-intro h2 {
+        font-size: 2em;
+      }
+
+      .legend-item {
+        display: flex;
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- CSS-only theme toggle --> 
+  <input type="radio" name="theme" id="theme-default" class="theme-radio" checked>
+  <input type="radio" name="theme" id="theme-eighties" class="theme-radio">
+  <input type="radio" name="theme" id="theme-nineties" class="theme-radio">
+  <input type="radio" name="theme" id="theme-oos" class="theme-radio">
+ 
+  <div class="page">
+
+    <header class="site-header" id="home">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="index.html" class="brand-name">Eternal Versace</a>
+        </div>
+
+        <nav class="main-nav" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="map.html" class="active">Map</a>
+          <a href="collection.html">Collection</a>
+          <a href="aboutus.html">About Us</a>
+        </nav>
+
+        <div class="theme-switch">
+          <label for="theme-default" class="opt light">⚜️</label>
+          <label for="theme-eighties" class="opt dark">💎</label>
+          <label for="theme-nineties" class="opt mid">💾</label>
+          <label for="theme-oos" class="opt vivid">🛸</label>
+          <span class="knob"></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+        <h2>Interactive Museum Map</h2>
+
+      <!-- Interactive Map -->
+      <section class="map-section">
+        <div class="map-wrapper">
+          <img src="images/floor_plan.png" alt="Museum Floor Plan" class="floor-plan" id="floorPlan">
+          
+          <!-- Hotspots - positioned based on the floor plan image -->
+          <!-- Red Carpet Looks -->
+          <div class="hotspot" style="left: 10%; top: 10%;" onclick="openModal('Bandage Dress')">
+            <div class="tooltip">Bandage Dress</div>
+          </div>
+          <div class="hotspot" style="left: 23.5%; top: 10%;" onclick="openModal('Safety Pin Dress')">
+            <div class="tooltip">Safety Pin Dress</div>
+          </div>
+          <div class="hotspot" style="left: 37%; top: 10%;" onclick="openModal('Princess Diana Dress')">
+            <div class="tooltip">Princess Diana Dress</div>
+          </div>
+          <div class="hotspot" style="left: 50.5%; top: 10%;" onclick="openModal('Elton Johns Suit')">
+            <div class="tooltip">Elton Johns Suit</div>
+          </div>
+          <div class="hotspot" style="left: 20%; top: 26%;" onclick="openModal('Chainmail Dress')">
+            <div class="tooltip">Chainmail Dress</div>
+          </div>
+          <div class="hotspot" style="left: 35%; top: 26%;" onclick="openModal('Butterfly Dress')">
+            <div class="tooltip">Butterfly Dress</div>
+          </div>
+          <div class="hotspot" style="left: 50%; top: 26%;" onclick="openModal('Green Jungle Dress')">
+            <div class="tooltip">Green Jungle Dress</div>
+          </div>
+
+          <!-- Left side dots (Gianni's Story) -->
+          <div class="hotspot" style="left: 10%; top: 47.5%;" onclick="openModal('Ballet Costumes')">
+            <div class="tooltip">Ballet Costumes</div>
+          </div>
+          <div class="hotspot" style="left: 28%; top:47.5%;" onclick="openModal('Brown Leather Trench Coat')">
+            <div class="tooltip">Brown Leather Trench Coat</div>
+          </div>
+          <div class="hotspot" style="left: 28%; top: 69%;" onclick="openModal('Versace x H&M Collaboration')">
+            <div class="tooltip">Versace x H&M Collaboration</div>
+          </div>
+          <div class="hotspot" style="left: 10%; top: 69%;" onclick="openModal('Picasso painting')">
+            <div class="tooltip">Picasso painting</div>
+          </div>
+          <div class="hotspot" style="left: 10%; top: 90.4%;" onclick="openModal('Fratelli — Santo Versace')">
+            <div class="tooltip">Fratelli — Santo Versace</div>
+          </div>
+         <div class="hotspot" style="left: 20%; top: 90.4%;" onclick="openModal('Gianni Versace as a Сhild')">
+            <div class="tooltip">Gianni Versace as a Child</div>
+          </div>
+
+          <!-- Right side dots (Not Just Clothing) -->
+          <div class="hotspot" style="left: 53%; top: 42%;" onclick="openModal('Medusa Sunglasses')">
+            <div class="tooltip">Medusa Sunglasses</div>
+          </div>
+          <div class="hotspot" style="left: 69.5%; top: 42%;" onclick="openModal('Medusa Aevitas Satin Shoes')">
+            <div class="tooltip">Medusa Aevitas Satin Shoes</div>
+          </div>
+          <div class="hotspot" style="left: 53%; top: 60%;" onclick="openModal('Palazzo Empire Bag')">
+            <div class="tooltip">Palazzo Empire Bag</div>
+          </div>
+          <div class="hotspot" style="left: 64.4%; top: 60%;" onclick="openModal('Versace Tableware')">
+            <div class="tooltip">Versace Tableware</div>
+          </div>
+          <div class="hotspot" style="left: 69.5%; top: 26%;" onclick="openModal('Medusa Silk Scarf')">
+            <div class="tooltip">Medusa Silk Scarf</div>
+          </div>
+          <div class="hotspot" style="left: 69.5%; top: 10%;" onclick="openModal('First Fragrance')">
+            <div class="tooltip">First Fragrance</div>
+          </div>
+        </div>
+
+        <div class="legend">
+          <h3>Interactive Point</h3>
+          <div class="legend-item">
+            <div class="legend-dot"></div>
+            <span> - Click for more information</span>
+          </div>
+        </div>
+      </section>
+      <p class="lead">
+        The museum map is designed as an interactive navigation tool that allows visitors to explore the exhibition in a spatial and intuitive way. You can click on highlighted points within the map to access information about specific exhibits. Each point leads to a dedicated object information page, where additional details can be accessed via a QR code.
+        <br><br>The exhibition is divided into three thematic sections. The first hall is dedicated exclusively to Gianni Versace and presents items directly related to his life and work. The second hall focuses on some of the most iconic red carpet looks and celebrity outfits associated with the fashion house. The third hall expands beyond fashion, showcasing objects and creations by the Versace brand that are not directly related to clothing.
+        </p>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <h3>Eternal Versace</h3>
+          <p>Student project for the "Information Modeling and Web technologies" course of the Master Degree in Digital Humanities and Digital Knowledge of the University of Bologna</p>
+        </div>
+        <div>
+          <h3>Links</h3>
+          <p>About</p>
+          <p>Documentation</p>
+          <p>Disclaimer</p>
+          <p>GitHub repository</p>
+          <p>DHDK course page</p>
+        </div>
+        <div>
+          <h3>Creators</h3>
+          <p>Artem Romashov</p>
+          <p>Polina Khromtcova</p>
+        </div>
+      </div>
+      <p class="tiny">© 2025 Eternal Versace</p>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const contentData = {
+      'Bandage Dress': {
+        title: 'Bandage Dress, 1992',
+        content: `<p>The Versace bandage dress is a tight dress made from many pieces of fabric that hold the body like gentle bands. It became famous in the 1990s because many models and celebrities wore it at fashion shows and events.</p><p>The bandage-style dresses developed in the late 1980s and early 1990s became an important part of early body-conscious fashion associated with Versace. Inspired by the idea of clothing that shapes and highlights the natural form of the body, these dresses used tightly constructed panels that created a sculptural silhouette.</p>`
+      },
+      'Safety Pin Dress': {
+        title: 'Safety Pin Dress, 1994',
+        content: `<p>The famous 1994 Versace safety pin dress became very popular when actress Elizabeth Hurley wore it on the red carpet. The black dress, decorated with large gold pins, showed how bold and unusual fashion designs can become world-famous.</p><p>The Safety Pin Dress by Gianni Versace became one of the most historically significant red-carpet moments in fashion, demonstrating how celebrity appearances could redefine the influence of runway fashion.</p>`
+      },
+      'Princess Diana Dress': {
+        title: 'Princess Diana Versace Dress, 1997',
+        content: `<p>In 1997, Princess Diana wore a beautiful Versace dress for the cover of Harper's Bazaar magazine. The photos became very famous because they were taken shortly before she passed away and showed her elegant modern style.</p><p>The shoot marked an important moment in Diana's post-royal style transformation, as she increasingly collaborated with leading fashion houses and adopted a more modern, minimalist aesthetic.</p>`
+      },
+      'Elton Johns Suit': {
+        title: 'Elton John Performance Costume',
+        content: `<p>Elton John wore Versace costumes on stage, and they were as colorful and bold as his music. This outfit shows sparkling details, bright colors, and playful shapes—perfect for his unforgettable concerts.</p><p>Versace's collaboration with Elton John exemplifies the house's affinity for theatricality and celebrity culture, combining ornate embroidery, bold color blocking, and sculptural tailoring.</p>`
+      },
+      'Green Jungle Dress': {
+        title: 'Green Jungle Dress, 2000',
+        content: `<p>The iconic green jungle-print dress worn by Jennifer Lopez at the 2000 Grammy Awards was originally designed by Versace and first appeared on the runway in the Spring/Summer 2000 collection.</p><p>The massive public interest in photos of the dress reportedly contributed to the launch of Google Images in 2001, highlighting its cultural and technological impact.</p>`
+      },
+      'Chainmail Dress': {
+        title: 'Chainmail Dress',
+        content: `<p>Versace's chainmail dresses represent an innovative approach to evening wear, utilizing metal rings and mesh constructions to create sculptural silhouettes.</p><p>These pieces exemplify the house's experimental approach to material and form, blending futuristic aesthetics with classical draping principles.</p>`
+      },
+      'Butterfly Dress': {
+        title: 'Butterfly Dress, 2003',
+        content: `<p>This dress from 2003 is known as the "Butterfly Dress." Made of light, flowing fabric, it looks almost as if butterfly wings are wrapped around the body.</p><p>Created in 2003, it exemplifies Donatella Versace's exploration of metamorphosis as a theme in haute couture, integrating advanced textile printing with layered silk chiffon.</p>`
+      },
+      'Ballet Costumes': {
+        title: 'Costumes for The Legend of Joseph Ballet, 1982',
+        content: `<p>In 1982, Gianni Versace designed costumes for the ballet The Legend of Joseph (Josephslegende), marking one of his earliest major collaborations with the performing arts.</p><p>The production, staged at La Scala in Milan, allowed Versace to experiment with theatrical ornamentation, rich textiles, and classical historical references beyond runway fashion.</p>`
+      },
+      'Brown Leather Trench Coat': {
+        title: 'Brown Leather Pleated Trench Coat',
+        content: `<p>The brown leather pleated trench coat was one of the early designs that helped make Versace famous in the late 1970s, showing that clothes like coats could be made from soft leather and still look elegant and bold.</p><p>This coat quickly became emblematic of the brand's early identity, merging Milanese craftsmanship with a distinctly modern aesthetic inspired by urban glamour.</p>`
+      },
+      'Medusa Sunglasses': {
+        title: 'Versace Medusa Sunglasses',
+        content: `<p>Versace Biggie Medusa sunglasses are big, stylish sunglasses inspired by 1990s music fashion. They have thick frames and a small gold Medusa symbol on the sides, making them instantly recognizable.</p><p>Designed as statement accessories, these sunglasses combine high-fashion aesthetics with strong streetwear influence, representing Versace's blend of opulence and pop-culture heritage.</p>`
+      },
+      'Medusa Silk Scarf': {
+        title: 'Medusa Barocco Print Silk Scarf',
+        content: `<p>The Versace Barocco silk scarf became famous in the 1990s because of its bright gold patterns and the Medusa symbol the brand has used since 1978.</p><p>Throughout the 1990s, silk scarves featuring this print became signature luxury accessories, often styled with matching garments to create the brand's maximalist total looks.</p>`
+      },
+      'Picasso painting': {
+        title: 'Picasso Collaboration',
+        content: `<p>Versace loved art and created special designs inspired by famous artist Pablo Picasso. This shows how fashion and art can work together to make beautiful things.</p><p>Through collaborations and reinterpretations of Picasso's aesthetic, Versace elevated fashion to the realm of artistic expression, demonstrating how haute couture could serve as a medium for cultural dialogue.</p>`
+      },
+      'First Fragrance': {
+        title: 'Versace Fragrance, 1981',
+        content: `<p>The first fragrance by Gianni Versace was launched in 1981, marking the house's initial expansion from fashion into the luxury beauty market.</p><p>Released under the name Gianni Versace, the perfume reflected the brand's early aesthetic of sensual elegance and Mediterranean-inspired opulence, helping establish brand recognition globally.</p>`
+      },
+      'Fratelli — Santo Versace': {
+        title: 'Fratelli: The Story of Santo Versace',
+        content: `<p>In Fratelli, Santo Versace tells the story of growing up with his younger brother Gianni and building a global fashion empire together.</p><p>The book is both personal and historical: it speaks about family, ambition, creativity, and the challenges behind building one of the most influential luxury brands of the late 20th century.</p>`
+      },
+      'Gianni Versace as a Child': {
+        title: 'Gianni Versace\'s Childhood',
+        content: `<p>Gianni Versace was born in 1946 in Italy and grew up watching his mother make dresses in her workshop. As a child, he learned how clothes were designed, which helped him become a famous fashion designer.</p><p>His mother, Francesca Versace, owned a dressmaking atelier, and during the 1950s he frequently assisted her, learning about fabrics, embroidery, and garment construction.</p>`
+      },
+      'Versace x H&M Collaboration': {
+        title: 'Versace x H&M Collaboration, 2011',
+        content: `<p>In 2011, Versace worked with H&M to make a special collection. The idea was to let more people enjoy Versace's colorful prints and bold style at more affordable prices.</p><p>The collaboration marked a pivotal moment in high–low fashion, translating house signatures—vivid prints, leather, and Medusa motifs—into accessible ready-to-wear while preserving brand identity.</p>`
+      },
+      'Medusa Aevitas Satin Shoes': {
+        title: 'Medusa Aevitas Satin Shoes',
+        content: `<p>These are the Medusa Aevitas shoes, known for their huge platforms and high heels. Made of shiny satin and decorated with the Medusa emblem, they became a hit for their bold, glamorous look.</p><p>The platform pumps epitomize Versace's 21st-century maximalism, featuring towering block heels, double platforms, satin finish, and an ankle strap adorned with the Medusa medallion.</p>`
+      },
+      'Palazzo Empire Bag': {
+        title: 'Palazzo Empire Bag',
+        content: `<p>The Palazzo Empire is one of Versace's most famous handbags. Launched in 2016, it features the Medusa head on the front and is designed to look both elegant and practical.</p><p>Introduced in 2016, it is defined by architectural structure, supple leather, and the central Medusa head plaque, reflecting Donatella Versace's emphasis on modern luxury and functionality.</p>`
+      },
+      'Versace Tableware': {
+        title: 'Versace Tableware & Ceramics',
+        content: `<p>Versace doesn't only make clothes—they also design furniture and tableware. Chairs, plates, and cups carry the same gold details and Medusa symbols you see in the clothes, bringing fashion into everyday life.</p><p>Versace Home, established in 1992, extended the brand's aesthetic into lifestyle design with neoclassical motifs, lavish ornamentation, and the iconic Medusa emblem.</p>`
+      }
+    };
+
+    function openModal(section) {
+      const modal = document.getElementById('modal');
+      const modalBody = document.getElementById('modalBody');
+      const data = contentData[section];
+      
+      modalBody.innerHTML = `
+        <h2>${data.title}</h2>
+        ${data.content}
+        <img src="images/qr_exhibition_demo.png" alt="QR code for exhibition demo" class="modal-qr-image">
+      `;
+      
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eternal Versace — Chronological Path</title>
+  <link rel="stylesheet" href="css/default.css" id="theme-stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"> 
+  <script src="theme-switcher.js"></script>
+</head>
+<body>
+  <!-- CSS-only theme toggle --> 
+  <input type="radio" name="theme" id="theme-default" class="theme-radio" checked>
+  <input type="radio" name="theme" id="theme-eighties" class="theme-radio">
+  <input type="radio" name="theme" id="theme-nineties" class="theme-radio">
+  <input type="radio" name="theme" id="theme-oos" class="theme-radio">
+ 
+  <div class="page">
+
+    <header class="site-header" id="home">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="index.html" class="brand-name">Eternal Versace</a>
+        </div>
+
+        <nav class="main-nav" aria-label="Primary">
+          <a href="index.html" class="active">Home</a>
+          <a href="map.html">Map</a>
+          <a href="collection.html">Collection</a>
+          <a href="aboutus.html">About Us</a>
+        </nav>
+
+        <div class="theme-switch">
+          <label for="theme-default" class="opt light">⚜️</label>
+          <label for="theme-eighties" class="opt dark">💎</label>
+          <label for="theme-nineties" class="opt mid">💾</label>
+          <label for="theme-oos" class="opt vivid">🛸</label>
+          <span class="knob"></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Intro -->
+      <section class="intro">
+        <h2>Chronological order</h2>
+        <p class="lead">
+          Here you will explore the exhibition in chronological order. This exhibition traces the history of Versace from its founding in 1978 by Gianni Versace to its evolution into a global symbol of Italian luxury. Bringing together archival garments, accessories, photographs, and multimedia materials, it explores how the house redefined glamour through bold color, classical references, and fearless sensuality. From the supermodel era of the 1990s to contemporary reinterpretations under new creative directions, Versace has continuously shaped the dialogue between fashion, celebrity, and popular culture. This exhibition invites visitors to discover how a family-founded atelier from Milan became one of the most influential fashion houses of the late twentieth and early twenty-first centuries.
+        </p>
+        <button type="button" class="main-path-btn" onclick="window.location.href='childhood.html'">Start</button>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <h3>Eternal Versace</h3>
+          <p>Student project for the "Information Modeling and Web technologies" course of the Master Degree in Digital Humanities and Digital Knowledge of the University of Bologna</p>
+        </div>
+        <div>
+          <h3>Links</h3>
+          <p>About</p>
+          <p>Documentation</p>
+          <p>Disclaimer</p>
+          <p>GitHub repository</p>
+          <p>DHDK course page</p>
+        </div>
+        <div>
+          <h3>Creators</h3>
+          <p>Artem Romashov</p>
+          <p>Polina Khromtcova</p>
+        </div>
+      </div>
+      <p class="tiny">© 2025 Eternal Versace</p>
+    </footer>
+  </div>
+
+  <script>
+    function choosePath(path) {
+      localStorage.setItem('path', path);
+      
+      if (path === 0) {
+        window.location.href = 'chronological_path.html';
+      } else if (path === 1) {
+        window.location.href = 'donatella_path.html';
+      } else if (path === 2) {
+        window.location.href = 'red_carpet_path.html';
+      }
+    }
+  </script>
+</body>
+</html>
+
