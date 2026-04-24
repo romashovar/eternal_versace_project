@@ -238,8 +238,18 @@ h2::after { display: none; }
   display: block;
   float: right;
   width: 100%;
-  max-width: 460px;
+  max-width: 560px;
   margin: 0 0 18px 32px;
+  border-radius: 0;
+  border: var(--block-border);
+  box-shadow: 2px 2px 0 #000000;
+}
+
+.path-media-left {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 0 18px 0;
   border-radius: 0;
   border: var(--block-border);
   box-shadow: 2px 2px 0 #000000;

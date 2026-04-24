@@ -171,8 +171,18 @@ h2 {
   display:block;
   float:right;
   width:100%;
-  max-width:460px;
+  max-width:560px;
   margin:0 0 18px 32px;
+  border-radius:0;
+  border:3px solid #000000;
+  box-shadow:6px 6px 0 #bfa76a, 0 0 18px rgba(191,167,106,0.3);
+}
+
+.path-media-left{
+  display:block;
+  width:100%;
+  max-width:560px;
+  margin:0 0 18px 0;
   border-radius:0;
   border:3px solid #000000;
   box-shadow:6px 6px 0 #bfa76a, 0 0 18px rgba(191,167,106,0.3);
