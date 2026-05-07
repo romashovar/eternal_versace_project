@@ -167,9 +167,8 @@ a.brand-name {
   box-shadow: inset 1px 1px 0 0 rgba(255,255,255,0.4);
 }
 
-/* Nav — white underlined links on purple (not dropdown items) */
-.main-nav > a,
-.main-nav > .about-menu-wrap .about-menu-trigger {
+/* Nav — white underlined links on purple */
+.main-nav > a {
   text-decoration: underline;
   color: #FFFFFF;
   font-weight: normal;
@@ -181,31 +180,14 @@ a.brand-name {
   font-family: Verdana, Geneva, Arial, sans-serif;
   transition: none;
 }
-.main-nav > a:hover,
-.main-nav > .about-menu-wrap .about-menu-trigger:hover {
+.main-nav > a:hover {
   background: rgba(255,255,255,0.15);
   color: #FFFFFF;
 }
-.main-nav > a.active,
-.main-nav > .about-menu-wrap .about-menu-trigger.active {
+.main-nav > a.active {
   background: rgba(0,0,0,0.25);
   color: #FFFFFF;
 }
-
-/* About us dropdown menu */
-.about-menu-wrap{position:relative;display:inline-flex}
-.about-menu-trigger::after{content:" \25BE";font-size:0.8em}
-.about-menu-dropdown{
-  position:absolute;right:0;top:44px;min-width:170px;display:none;flex-direction:column;z-index:120;
-  background:#FFFFFF;border:1px solid #000000;box-shadow:2px 2px 0 #000000;overflow:hidden;
-}
-.about-menu-wrap.open .about-menu-dropdown{display:flex}
-.about-menu-dropdown a{
-  text-decoration:none;color:#000000;padding:8px 10px;border-bottom:1px solid #000000;font-size:11px;
-  font-family:Verdana, Geneva, Arial, sans-serif;font-weight:normal;
-}
-.about-menu-dropdown a:last-child{border-bottom:none}
-.about-menu-dropdown a:hover{background:#EDE8F0;color:#000000}
 
 /* Intro, headings — purple section bar */
 .intro { padding: 16px 0 8px; position: relative; }

@@ -101,9 +101,7 @@ a.brand-name { text-decoration: none }
 }
 
 .main-nav{display:flex;gap:6px;align-items:center;overflow:visible}
-/* Only top-level nav + About trigger — not dropdown links inside .about-menu-dropdown */
-.main-nav > a,
-.main-nav > .about-menu-wrap .about-menu-trigger{
+.main-nav > a{
   text-decoration:none;
   color:var(--accent);
   font-family: 'Antonio', 'Unica One', 'Futura', Arial, sans-serif;
@@ -119,30 +117,13 @@ a.brand-name { text-decoration: none }
   box-shadow:2px 2px 0px #bfa76a;
 }
 .main-nav > a:hover,
-.main-nav > a.active,
-.main-nav > .about-menu-wrap .about-menu-trigger:hover,
-.main-nav > .about-menu-wrap .about-menu-trigger.active{
+.main-nav > a.active{
   background:var(--accent);
   color:#0a0a0a;
   border-color:var(--accent);
   box-shadow:inset 1px 1px 0px #bfa76a;
   transform:translate(-1px, -1px);
 }
-
-/* About us dropdown menu */
-.about-menu-wrap{position:relative;display:inline-flex}
-.about-menu-trigger::after{content:" \25BE";font-size:0.8em}
-.about-menu-dropdown{
-  position:absolute;right:0;top:44px;min-width:170px;display:none;flex-direction:column;z-index:120;
-  background:var(--card);border:2px solid var(--accent);border-radius:0;box-shadow:4px 4px 0px #bfa76a,var(--shadow);overflow:hidden;
-}
-.about-menu-wrap.open .about-menu-dropdown{display:flex}
-.about-menu-dropdown a{
-  text-decoration:none;color:var(--accent);padding:10px 12px;border-bottom:2px solid #000000;font-weight:700;
-  text-transform:uppercase;letter-spacing:0.08em;font-size:12px;
-}
-.about-menu-dropdown a:last-child{border-bottom:none}
-.about-menu-dropdown a:hover{background:var(--accent);color:#0a0a0a}
 
 /* Intro */
 .intro{padding:36px 0 10px; position:relative}

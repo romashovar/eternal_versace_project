@@ -3,65 +3,42 @@
 
 (function() {
   'use strict';
-  
-  function injectAboutMenu() {
-    const aboutLink = document.querySelector('.site-header .main-nav a[href="aboutus.html"]');
-    if (!aboutLink || aboutLink.closest('.about-menu-wrap')) {
+
+  function normalizeHeaderLinks() {
+    const nav = document.querySelector('.site-header .main-nav');
+    if (!nav) {
       return;
     }
 
-    const menuWrap = document.createElement('div');
-    menuWrap.className = 'about-menu-wrap';
-
-    aboutLink.classList.add('about-menu-trigger');
-    aboutLink.setAttribute('aria-haspopup', 'true');
-    aboutLink.setAttribute('aria-expanded', 'false');
-
-    const dropdown = document.createElement('div');
-    dropdown.className = 'about-menu-dropdown';
-    dropdown.setAttribute('role', 'menu');
-    dropdown.innerHTML = [
-      '<a role="menuitem" href="aboutus.html">About us</a>',
-      '<a role="menuitem" href="disclaimer.html">Disclaimer</a>',
-      '<a role="menuitem" href="documentation.html">Documentation</a>'
-    ].join('');
-
-    aboutLink.parentNode.insertBefore(menuWrap, aboutLink);
-    menuWrap.appendChild(aboutLink);
-    menuWrap.appendChild(dropdown);
-
-    function closeMenu() {
-      menuWrap.classList.remove('open');
-      aboutLink.setAttribute('aria-expanded', 'false');
-    }
-
-    aboutLink.addEventListener('click', function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      const isOpen = menuWrap.classList.toggle('open');
-      aboutLink.setAttribute('aria-expanded', String(isOpen));
-    });
-
-    dropdown.addEventListener('click', function() {
-      closeMenu();
-    });
-
-    document.addEventListener('click', function(event) {
-      if (!menuWrap.contains(event.target)) {
-        closeMenu();
+    const navLinks = Array.from(nav.querySelectorAll('a'));
+    navLinks.forEach(function(link) {
+      const href = link.getAttribute('href');
+      if (href === 'aboutus.html' || href === 'disclaimer.html' || href === 'documentation.html') {
+        link.remove();
       }
     });
 
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        closeMenu();
+    const pages = [
+      { href: 'aboutus.html', label: 'About Us' },
+      { href: 'disclaimer.html', label: 'Disclaimer' },
+      { href: 'documentation.html', label: 'Documentation' }
+    ];
+
+    const currentPage = window.location.pathname.split('/').pop();
+    pages.forEach(function(page) {
+      const link = document.createElement('a');
+      link.href = page.href;
+      link.textContent = page.label;
+      if (currentPage === page.href) {
+        link.classList.add('active');
       }
+      nav.appendChild(link);
     });
   }
 
   // Initialize theme switcher when DOM is ready
   document.addEventListener('DOMContentLoaded', function() {
-    injectAboutMenu();
+    normalizeHeaderLinks();
     const themeRadios = document.querySelectorAll('input[name="theme"]');
     const stylesheet = document.getElementById('theme-stylesheet');
     
