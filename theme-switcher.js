@@ -18,7 +18,6 @@
 
       stylesheet.href = getStylesheetFilename(theme); // изменяем ссылку на стили
       localStorage.setItem('theme', theme); // сохраняем выбранную тему в localStorage
-      document.body.classList.toggle('future-theme', theme === 'future'); // добавляем класс для темы future (?)
       
       // Обновляем выбранную радио-кнопку
       const radio = document.getElementById('theme-' + theme);
@@ -44,7 +43,6 @@
       if (radio) {
         radio.checked = true; // включаем радио-кнопку
         stylesheet.href = getStylesheetFilename(savedTheme); // изменяем ссылку на стили
-        document.body.classList.toggle('future-theme', savedTheme === 'future'); // добавляем класс для темы future (?)
       }
     } else {
       // Дефолтная тема, если никакая не выбрана
