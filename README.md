@@ -10,7 +10,7 @@
 
 The exhibition offers a closer look at the ideas and imagination behind one of the world's most recognizable fashion houses.
 
-Visitors can explore the evolution of Versace — from Gianni Versace's early work to the creations shaped by Donatella Versace — tracing its iconic references to classical mythology, rich ornament, sensual silhouettes, and a love of drama and glamour. The exhibition also highlights Versace's deep connection to music, celebrity culture, and contemporary design.
+Visitors can explore the evolution of Versace, from Gianni Versace's early work to the creations shaped by Donatella Versace, tracing its iconic references to classical mythology, rich ornament, sensual silhouettes, and a love of drama and glamour. The exhibition also highlights Versace's deep connection to music, celebrity culture, and contemporary design.
 
 ## Exhibition Paths
 
