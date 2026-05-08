@@ -47,9 +47,13 @@
       return;
     }
 
-    // theme-oos uses future.css
+    // theme-eighties uses artdeco.css, theme-oos uses future.css
     function getStylesheetFilename(theme) {
-      return 'css/' + (theme === 'oos' ? 'future' : theme) + '.css';
+      const themeToStylesheet = {
+        eighties: 'artdeco',
+        oos: 'future'
+      };
+      return 'css/' + (themeToStylesheet[theme] || theme) + '.css';
     }
 
     // Function to switch theme
