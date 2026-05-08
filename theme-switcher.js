@@ -1,97 +1,53 @@
-// Theme Switcher JavaScript
-// Handles theme switching across all pages
+// Переключение тем JavaScript
 
 (function() {
-  'use strict';
+  'use strict'; // самовызывающаяся функция, строгий режим
 
-  function normalizeHeaderLinks() {
-    const nav = document.querySelector('.site-header .main-nav');
-    if (!nav) {
-      return;
-    }
-
-    const navLinks = Array.from(nav.querySelectorAll('a'));
-    navLinks.forEach(function(link) {
-      const href = link.getAttribute('href');
-      if (href === 'aboutus.html' || href === 'disclaimer.html' || href === 'documentation.html') {
-        link.remove();
-      }
-    });
-
-    const pages = [
-      { href: 'aboutus.html', label: 'About Us' },
-      { href: 'disclaimer.html', label: 'Disclaimer' },
-      { href: 'documentation.html', label: 'Documentation' }
-    ];
-
-    const currentPage = window.location.pathname.split('/').pop();
-    pages.forEach(function(page) {
-      const link = document.createElement('a');
-      link.href = page.href;
-      link.textContent = page.label;
-      if (currentPage === page.href) {
-        link.classList.add('active');
-      }
-      nav.appendChild(link);
-    });
-  }
-
-  // Initialize theme switcher when DOM is ready
+  // Запускается только когда HTML уже загружен и элементы доступны в DOM
   document.addEventListener('DOMContentLoaded', function() {
-    normalizeHeaderLinks();
-    const themeRadios = document.querySelectorAll('input[name="theme"]');
-    const stylesheet = document.getElementById('theme-stylesheet');
-    
-    if (!stylesheet) {
-      console.warn('Theme stylesheet not found');
-      return;
-    }
+    const themeRadios = document.querySelectorAll('input[name="theme"]'); 
+    const stylesheet = document.getElementById('theme-stylesheet'); // находим радио-кнопки и стили
 
-    // theme-eighties uses artdeco.css, theme-oos uses future.css
+    // Функция возвращает путь css-файла для соответствующей темы
     function getStylesheetFilename(theme) {
-      const themeToStylesheet = {
-        eighties: 'artdeco',
-        oos: 'future'
-      };
-      return 'css/' + (themeToStylesheet[theme] || theme) + '.css';
+      return 'css/' + theme + '.css';
     }
 
-    // Function to switch theme
+    // Функция переключения темы
     function switchTheme(theme) {
-      if (stylesheet) {
-        stylesheet.href = getStylesheetFilename(theme);
-        localStorage.setItem('theme', theme);
-        document.body.classList.toggle('future-theme', theme === 'oos');
-        
-        // Update the checked radio button
-        const radio = document.getElementById('theme-' + theme);
-        if (radio) {
-          radio.checked = true;
-        }
+
+      stylesheet.href = getStylesheetFilename(theme); // изменяем ссылку на стили
+      localStorage.setItem('theme', theme); // сохраняем выбранную тему в localStorage
+      document.body.classList.toggle('future-theme', theme === 'future'); // добавляем класс для темы future (?)
+      
+      // Обновляем выбранную радио-кнопку
+      const radio = document.getElementById('theme-' + theme);
+      if (radio) {
+        radio.checked = true;
       }
     }
 
-    // Add event listeners to theme radio buttons
+    // Проходим по всем радио-кнопкам и добавляем обработчик события change
     themeRadios.forEach(radio => {
       radio.addEventListener('change', function() {
-        if (this.checked) {
+        if (this.checked) { // если радио-кнопка выбрана, то получаем имя темы
           const theme = this.id.replace('theme-', '');
-          switchTheme(theme);
+          switchTheme(theme); // вызываем функцию переключения темы
         }
       });
     });
 
-    // Load saved theme preference on page load
-    const savedTheme = localStorage.getItem('theme');
+    // Сохраняем тему при перезагрузке / переходе на другую страницу
+    const savedTheme = localStorage.getItem('theme'); // читаем сохраненную тему из localStorage
     if (savedTheme) {
-      const radio = document.getElementById('theme-' + savedTheme);
+      const radio = document.getElementById('theme-' + savedTheme); // находим радио-кнопку для соответствующей темы
       if (radio) {
-        radio.checked = true;
-        stylesheet.href = getStylesheetFilename(savedTheme);
-        document.body.classList.toggle('future-theme', savedTheme === 'oos');
+        radio.checked = true; // включаем радио-кнопку
+        stylesheet.href = getStylesheetFilename(savedTheme); // изменяем ссылку на стили
+        document.body.classList.toggle('future-theme', savedTheme === 'future'); // добавляем класс для темы future (?)
       }
     } else {
-      // Default to default theme if no preference saved
+      // Дефолтная тема, если никакая не выбрана
       const defaultRadio = document.getElementById('theme-default');
       if (defaultRadio) {
         defaultRadio.checked = true;
@@ -100,4 +56,3 @@
     }
   });
 })();
-

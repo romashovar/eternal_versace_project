@@ -26,9 +26,9 @@
 /* ===== Theme radio (hidden) + knob positions ===== */
 .theme-radio { position: fixed; left: -9999px; top: -9999px; }
 #theme-default:checked  ~ .page .theme-switch .knob { transform: translateX(0); }
-#theme-eighties:checked ~ .page .theme-switch .knob { transform: translateX(40px); }
+#theme-artdeco:checked ~ .page .theme-switch .knob { transform: translateX(40px); }
 #theme-nineties:checked ~ .page .theme-switch .knob { transform: translateX(80px); }
-#theme-oos:checked      ~ .page .theme-switch .knob { transform: translateX(120px); }
+#theme-future:checked      ~ .page .theme-switch .knob { transform: translateX(120px); }
 
 /* ===== Base ===== */
 *, html, body { box-sizing: border-box; margin: 0; padding: 0; }
