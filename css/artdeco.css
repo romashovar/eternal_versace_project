@@ -68,7 +68,7 @@ main.container:not(:has(.collection)) + .site-footer{margin-top:0}
 .header-inner{display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center; padding:20px 0; position:relative}
 .theme-switch{justify-self:end}
 .brand{justify-self:start;display:flex;align-items:center;justify-content:center;gap:20px;font-weight:800;}
-.brand-name{text-align:center;font-family:'Antonio', 'Unica One', 'Futura', Arial, sans-serif;font-weight: 400;font-style: normal;font-size:42px;letter-spacing:1px;color: #c2a95a; text-shadow: 0 3px 6px rgba(0, 0, 0, 0.1)}
+.brand-name{text-align:center;font-family:'Antonio', 'Unica One', 'Futura', Arial, sans-serif;font-weight: 400;font-style: normal;font-size:30px;letter-spacing:1px;color: #c2a95a; text-shadow: 0 3px 6px rgba(0, 0, 0, 0.1)}
 a.brand-name { text-decoration: none }
 
 /* Theme switch */
