@@ -125,7 +125,6 @@
           <p>Polina Khromtcova</p>
         </div>
       </div>
-      <p class="tiny">© 2025 Eternal Versace</p>
     </footer>
   </div>
   <script>
@@ -214,18 +213,26 @@
         if (path === "0") {
           window.location.href = 'finale.html';
         } else if (path === "1") {
-          window.location.href = '';
+          localStorage.setItem('path', '0');
+          path = '0';
+          window.location.href = 'finale.html';
         } else if (path === "2") {
-          window.location.href = '';
+          localStorage.setItem('path', '0');
+          path = '0';
+          window.location.href = 'finale.html';
         }
       }
       else if (direction === "back") { //предыдущая страница
         if (path === "0") {
           window.location.href = 'palazzo_bag.html';
         } else if (path === "1") {
-          window.location.href = '';
+          localStorage.setItem('path', '0');
+          path = '0';
+          window.location.href = 'palazzo_bag.html';
         } else if (path === "2") {
-          window.location.href = '';
+          localStorage.setItem('path', '0');
+          path = '0';
+          window.location.href = 'palazzo_bag.html';
         }
       }
     }

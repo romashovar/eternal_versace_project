@@ -126,7 +126,6 @@
           <p>Polina Khromtcova</p>
         </div>
       </div>
-      <p class="tiny">© 2025 Eternal Versace</p>
     </footer>
   </div>
   <script>
@@ -215,7 +214,9 @@
         if (path === "0") {
           window.location.href = "butterfly_dress.html";
         } else if (path === "1") {
-          window.location.href = '';
+          localStorage.setItem('path', '0');
+          path = '0';
+          window.location.href = 'butterfly_dress.html';
         } else if (path === "2") {
           window.location.href = 'butterfly_dress.html';
         }
@@ -224,7 +225,9 @@
         if (path === "0") {
           window.location.href = 'princess_diana.html';
         } else if (path === "1") {
-          window.location.href = '';
+          localStorage.setItem('path', '0');
+          path = '0';
+          window.location.href = 'princess_diana.html';
         } else if (path === "2") {
           window.location.href = 'pin_dress.html';
         }
